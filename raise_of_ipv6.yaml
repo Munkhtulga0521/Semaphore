@@ -1,22 +1,18 @@
 ---
-- name: Cisco Playbook - Check ARP for each interface
-  hosts: switch1   # match the name in your inventory
-  gather_facts: false
+- name: Show total IPv6 DHCP users on Huawei routers
+  hosts: huawei_routers
+  gather_facts: no
   connection: network_cli
-
   vars:
-    ansible_network_os: cisco.ios.ios
-    ansible_become: yes
-    ansible_become_method: enable
-    ansible_become_password: ATL@nt1$
+    ansible_network_os: huawei.vrp.vrp
 
   tasks:
-    - name: Get ARP table
-      ios_command:
+    - name: Show total IPv6 DHCP users
+      huawei.vrp.vrp_command:
         commands:
-          - show ip arp
-      register: arp_output
+          - display ipv6 dhcp statistics | include "Total users"
+      register: output
 
-    - name: Display ARP table
+    - name: Print/display output
       debug:
-        var: arp_output.stdout_lines
+        var: output.stdout_lines

@@ -1,13 +1,11 @@
----
-- name: Get IPv6 DHCP users
-  hosts: your_huawei_device
+- name: Get total IPv6 users
+  hosts: huawei_device
   gather_facts: no
   
   tasks:
-    - name: Get total IPv6 DHCP users
+    - name: Get IPv6 DHCP stats
       community.network.ce_command:
-        commands:
-          - "display ipv6 dhcp pool statistics"
+        commands: "display ipv6 dhcp pool statistics"
       register: ipv6_result
 
     - name: Display result

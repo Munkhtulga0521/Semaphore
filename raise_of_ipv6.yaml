@@ -1,8 +1,12 @@
+---
 - name: Collect IPv6 DHCP users from Huawei routers
   hosts: huawei_routers
   gather_facts: no
-  tasks:
+  connection: network_cli
+  vars:
+    ansible_network_os: huawei.vrp.vrp
 
+  tasks:
     - name: Get total IPv6 users
       huawei.vrp.vrp_command:
         commands: display ipv6 dhcp statistics | include "Total users"
@@ -20,3 +24,4 @@
           # TYPE huawei_ipv6_total_users gauge
           huawei_ipv6_total_users{router="{{ inventory_hostname }}"} {{ total_users }}
       delegate_to: localhost
+      run_once: true

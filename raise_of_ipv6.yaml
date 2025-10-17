@@ -4,15 +4,10 @@
   gather_facts: no
   
   tasks:
-    - name: Install huawei.vrp collection
-      command: ansible-galaxy collection install huawei.vrp
-      delegate_to: localhost
-      run_once: true
-      ignore_errors: yes
-
     - name: Get total IPv6 DHCP users
-      huawei.vrp.vrp_command:
-        commands: "display ipv6 dhcp pool statistics"
+      community.network.ce_command:
+        commands:
+          - "display ipv6 dhcp pool statistics"
       register: ipv6_result
 
     - name: Display result
